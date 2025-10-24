@@ -3,7 +3,7 @@ import allure
 import pytest
 from data import Data
 from urls import Urls
-from helpers import create_random_login, create_random_password, create_random_firstname
+from helpers import create_random_login, create_random_password
 
 
 class TestCourierLogin:
@@ -22,7 +22,7 @@ class TestCourierLogin:
         # выполняем логин
         response = requests.post(Urls.URL_courier_login, data=Data.valid_courier_data)
         
-        # проверяем статус 200 и поле 'ok'
+        # проверяем статус 200 и поле 'id'
         assert response.status_code == 200
         assert 'id' in response.json()
 
@@ -31,7 +31,7 @@ class TestCourierLogin:
                         'Проверяются код и тело ответа.')
     @pytest.mark.parametrize('nonexistent_credentials', [
         {'login': create_random_login(), 'password': create_random_password()},
-        Data.courier_data_with_wrong_password
+        {'login': Data.valid_login, 'password': 'wrong_password_123456'}
     ])
     def test_courier_login_nonexistent_data_not_found(self, nonexistent_credentials):
         response = requests.post(Urls.URL_courier_login, data=nonexistent_credentials)
