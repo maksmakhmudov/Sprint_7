@@ -25,4 +25,4 @@ logs/
 
 # Environment variables
 .env
-*.env
+*.env.DS_Store
